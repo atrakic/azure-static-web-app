@@ -1,3 +1,7 @@
+test-results/
+pw-report/
+report.json
+
 bin
 obj
 csx
@@ -20,7 +24,7 @@ project.lock.json
 /data
 .secrets
 appsettings.json
-local.settings.json
+!local.settings.json
 
 node_modules
 dist
