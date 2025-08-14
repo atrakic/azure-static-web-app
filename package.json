@@ -1,7 +1,18 @@
 {
-  "name": "vanilla-basic",
+  "name": "azure-static-web-app",
   "version": "1.0.0",
-  "scripts": { 
-    "start": "sirv ./src public --cors --single --no-clear --port 8000"
+  "description": "A simple JavaScript Azure Static Web App with API",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.5.0",
+    "@azure/functions": "^4.0.0",
+    "@azure/identity": "^4.11.1"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.x"
   }
 }
