@@ -1,0 +1,11 @@
+services:
+  notebook:
+    build: .
+    image: notebook
+    container_name: notebook
+    volumes:
+      - ./cosmicsworks.ipynb:/home/jovyan/cosmicsworks.ipynb
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    ports:
+      - "${PORT:-8888}:8888"
