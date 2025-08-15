@@ -7,6 +7,15 @@
     "start": "swa start src/app --api-location src/functions",
     "test": "playwright test"
   },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atrakic/azure-static-web-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atrakic/azure-static-web-app.git"
+  },
   "dependencies": {
     "@azure/cosmos": "^4.5.0",
     "@azure/functions": "^4.0.0",
