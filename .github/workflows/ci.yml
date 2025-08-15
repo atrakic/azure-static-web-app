@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  workflow_dispatch: # allow manual triggering of the workflow
+  push:
+    paths:
+      - '.github/workflows/ci.yml'
+      - '**/*.js'
+      - '**/*.json'
+      - '**/*.ts'
+      - '**/*.tsconfig'
+  pull_request:
+    branches:
+      - main
+
+env:
+  NODE_VERSION: '18.x'  # set this to the node version to use (e.g. '8.x', '10.x', '12.x')
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache node modules
+        id: cache-nodemodules
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Run tests
+        run: npm run test --if-present
+
+# For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples

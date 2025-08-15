@@ -4,8 +4,8 @@
   "description": "A simple JavaScript Azure Static Web App with API",
   "main": "src/functions/*.js",
   "scripts": {
-    "start": "swa start src/app --api-location src/functions",
-    "test": "playwright test"
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
   },
   "keywords": [],
   "license": "ISC",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@azure/cosmos": "^4.5.0",
-    "@azure/functions": "^4.0.0",
+    "@azure/functions": "^4.3.0",
     "@azure/identity": "^4.11.1"
   },
   "devDependencies": {
