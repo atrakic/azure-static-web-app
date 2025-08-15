@@ -26,7 +26,7 @@ app.http('products', {
                 },
             });
 
-            const database = client.database('products-db');
+            const database = client.database('cosmosCatalog.cosmicworks');
             if (!database) {
                 context.error('ERROR:', 'Database not found');
                 return {
@@ -36,7 +36,7 @@ app.http('products', {
             }
 
             context.log('Connected to Cosmos DB successfully');
-            const container = database.container('products');
+            const container = database.container('cosmosCatalog.cosmicworks.products');
             const querySpec = {
                 query: 'SELECT * FROM products p WHERE p.category = @category',
                 parameters: [{

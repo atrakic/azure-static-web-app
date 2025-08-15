@@ -4,8 +4,9 @@ services:
     image: notebook
     container_name: notebook
     volumes:
-      - ./cosmicsworks.ipynb:/home/jovyan/cosmicsworks.ipynb
+      - ./cosmicsworks.ipynb:/home/jovyan/cosmicsworks.ipynb:rw
     environment:
       - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=foo
     ports:
       - "${PORT:-8888}:8888"

@@ -20,6 +20,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
     }
 }
 
+
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-03-15' = {
     name: cosmosDbAccountName
     location: location
@@ -38,6 +39,22 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-03-15' = {
         }
         enableFreeTier: true
     }
+}
+
+
+resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
+    name: '${staticWebAppName}/appsettings'
+    properties: {
+        properties: {
+            COSMOS_DB_ENDPOINT: cosmosDbAccount.properties.documentEndpoint
+            COSMOS_DB_ACCOUNT_NAME: cosmosDbAccountName
+            // Add other settings as needed
+        }
+    }
+    dependsOn: [
+        staticWebApp
+        cosmosDbAccount
+    ]
 }
 
 output staticWebAppEndpoint string = staticWebApp.properties.defaultHostname
