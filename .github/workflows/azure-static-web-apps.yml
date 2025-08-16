@@ -1,8 +1,8 @@
 # https://learn.microsoft.com/da-dk/azure/static-web-apps/build-configuration?tabs=identity&pivots=github-actions
-
 name: Azure Static Web Apps CI/CD
 
 on:
+  workflow_dispatch: # allow manual triggering of the workflow
   push:
     branches:
       - main
