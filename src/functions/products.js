@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load .env variables for local development
+
 const { app } = require('@azure/functions');
 const { DefaultAzureCredential } = require('@azure/identity');
 const { CosmosClient } = require('@azure/cosmos');
@@ -7,6 +9,7 @@ app.http('products', {
     authLevel: 'function',
     handler: async (request, context) => {
         context.log(`Http function processed request for url "${request.url}"`);
+
         const endpoint = process.env.COSMOS_DB_ENDPOINT;
         if (!endpoint) {
             context.log('ERROR: COSMOS_DB_ENDPOINT environment variable is not set');
@@ -15,6 +18,7 @@ app.http('products', {
                 body: JSON.stringify({ error: 'COSMOS_DB_ENDPOINT is not configured' })
             };
         }
+
         try {
             const client = new CosmosClient({
                 endpoint,
