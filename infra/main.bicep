@@ -48,7 +48,7 @@ resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
         properties: {
             COSMOS_DB_ENDPOINT: cosmosDbAccount.properties.documentEndpoint
             COSMOS_DB_ACCOUNT_NAME: cosmosDbAccountName
-            // Add other settings as needed
+            COSMOS_KEY: cosmosDbAccount.listKeys().primaryMasterKey
         }
     }
     dependsOn: [
@@ -58,4 +58,5 @@ resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
 }
 
 output staticWebAppEndpoint string = staticWebApp.properties.defaultHostname
-output cosmosDbEndpoint string = cosmosDbAccount.properties.documentEndpoint
+output COSMOS_DB_ENDPOINT string = cosmosDbAccount.properties.documentEndpoint
+output COSMOS_KEY string = cosmosDbAccount.listKeys().primaryMasterKey
