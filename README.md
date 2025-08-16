@@ -6,7 +6,6 @@
 
 This repo is used as a starter for a _very basic_ HTML web application using no front-end frameworks.
 
-This repo has a dev container. This means if you open it inside a [GitHub Codespace](https://github.com/features/codespaces), or using [VS Code with the remote containers extension](https://code.visualstudio.com/docs/remote/containers), it will be opened inside a container with all the dependencies already installed.
 
 ---
 
@@ -64,6 +63,6 @@ Use the Jupyter notebook in the `notebook/` folder to seed sample data into Cosm
 
 ## Notes
 
-- The API (`src/functions/products.js`) expects Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
+- The API [src/functions/products.js](src/functions/products.js) expects Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
 - The notebook can be used for both initial seeding and further data exploration.
-- For more details, see the documentation in the `notebook/README.md`.
+- For more details, see the documentation in the [notebook/README.md](notebook/README.md).
