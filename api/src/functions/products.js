@@ -1,7 +1,4 @@
-require('dotenv').config(); // Load .env variables for local development
-
 const { app } = require('@azure/functions');
-const { DefaultAzureCredential } = require('@azure/identity');
 const { CosmosClient } = require('@azure/cosmos');
 
 app.http('products', {
@@ -19,10 +16,18 @@ app.http('products', {
             };
         }
 
+        const key = process.env.COSMOS_KEY;
+        if (!endpoint) {
+            context.log('ERROR: COSMOS_KEY environment variable is not set');
+            return {
+                status: 500,
+                body: JSON.stringify({ error: 'COSMOS_KEY is not configured' })
+            };
+        }
+
         try {
             const client = new CosmosClient({
-                endpoint,
-                aadCredentials: new DefaultAzureCredential(),
+                endpoint, key,
                 connectionPolicy: { requestTimeout: 10000 },
             });
             const container = client

@@ -35,7 +35,7 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: node_modules
+          path: api/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -44,12 +44,18 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
-        run: npm install
+        run: |
+          cd api
+          npm install
 
       - name: Build
-        run: npm run build --if-present
+        run: |
+          cd api
+          npm run build --if-present
 
       - name: Run tests
-        run: npm run test --if-present
+        run: |
+          cd api
+          npm run test --if-present
 
 # For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
