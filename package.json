@@ -17,14 +17,8 @@
     "url": "git+https://github.com/atrakic/azure-static-web-app.git"
   },
   "dependencies": {
-    "@azure/cosmos": "^4.5.0",
     "@azure/functions": "^4.3.0",
-    "@azure/identity": "^4.11.1",
-    "dotenv": "^17.2.1"
-  },
-  "devDependencies": {
-    "@azure/static-web-apps-cli": "^2.0.6",
-    "@playwright/test": "^1.54.2",
-    "azure-functions-core-tools": "^4.1.2"
+    "@azure/cosmos": "^4.5.0",
+    "@azure/identity": "^4.11.1"
   }
 }
