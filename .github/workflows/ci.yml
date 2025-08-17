@@ -32,7 +32,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Cache node modules
-        if: false # disabled
+        ## if: false # disabled
         id: cache-nodemodules
         uses: actions/cache@v4
         env:
@@ -46,7 +46,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies
-        #if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: |
           npm install -y
 
