@@ -11,6 +11,9 @@ linux-emulator:
     --detach \
     mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
 
+test:
+	npm run test --if-present
+
 clean:
 	docker stop linux-emulator
 	docker rm -f linux-emulator

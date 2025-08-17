@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@azure/cosmos": "^4.5.0"
+  },
+  "name": "azure-static-web-app",
+  "version": "1.0.0",
+  "description": "[![CI](https://github.com/atrakic/azure-static-web-app/actions/workflows/ci.yml/badge.svg)](https://github.com/atrakic/azure-static-web-app/actions/workflows/ci.yml)",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.2"
+  },
+  "scripts": {
+    "start": "swa start app --api-location api",
+    "test": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atrakic/azure-static-web-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/atrakic/azure-static-web-app/issues"
+  },
+  "homepage": "https://github.com/atrakic/azure-static-web-app#readme"
+}

@@ -1,3 +1,4 @@
+# For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
 name: CI
 
 on:
@@ -28,7 +29,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: api/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Cache node modules
         id: cache-nodemodules
@@ -36,7 +37,7 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          path: api/node_modules
+          path: node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
@@ -46,17 +47,14 @@ jobs:
       - name: Install dependencies
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: |
-          cd api
-          npm install
+          npm install -y
 
-      - name: Build
-        run: |
-          cd api
-          npm run build --if-present
+      - name: Install SWA and Azure Function tool
+        run: npm install -g @azure/static-web-apps-cli azure-functions-core-tools
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
 
       - name: Run tests
         run: |
-          cd api
           npm run test --if-present
-
-# For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
