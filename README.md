@@ -6,7 +6,6 @@
 
 This repo is used as a starter for a _very basic_ HTML web application using no front-end frameworks.
 
-
 ---
 
 ## Deployment Instructions
@@ -43,26 +42,26 @@ Push your code to the repository connected to Azure Static Web Apps, or use Azur
 Use the Jupyter notebook in the `notebook/` folder to seed sample data into Cosmos DB:
 
 1. Build and run the notebook container:
-	```sh
-	cd notebook
-	docker compose up
-	# Or run Jupyter Lab locally
-	python3 -m pip install jupyterlab
-	jupyter lab
-	```
+   ```sh
+   cd notebook
+   docker compose up
+   # Or run Jupyter Lab locally
+   python3 -m pip install jupyterlab
+   jupyter lab
+   ```
 2. Open `cosmicsworks.ipynb` in Jupyter Lab.
 3. Follow the notebook steps to:
-	- Authenticate to Azure
-	- Create Cosmos DB resources (if not already created)
-	- Configure Spark/Cosmos connection
-	- Create database and containers
-	- Ingest sample product data
-	- Query and validate data
+   - Authenticate to Azure
+   - Create Cosmos DB resources (if not already created)
+   - Configure Spark/Cosmos connection
+   - Create database and containers
+   - Ingest sample product data
+   - Query and validate data
 
 ---
 
 ## Notes
 
-- The API [src/functions/products.js](src/functions/products.js) expects Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
+- The API [api/src/functions/products.js](api/src/functions/products.js) expects Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
 - The notebook can be used for both initial seeding and further data exploration.
 - For more details, see the documentation in the [notebook/README.md](notebook/README.md).
