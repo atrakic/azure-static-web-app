@@ -3,6 +3,7 @@ const { container } = require("./shared/context");
 
 app.http("productsPut", {
   methods: ["PUT"],
+  route: "products",
   authLevel: "function",
   handler: async (request, context) => {
     const item = await request.json();

@@ -8,6 +8,8 @@ This repo is used as a starter for a _very basic_ HTML web application using no 
 
 ---
 
+![App Screenshot](docs/index.png)
+
 ## Deployment Instructions
 
 ### 1. Provision Infrastructure (Azure)
