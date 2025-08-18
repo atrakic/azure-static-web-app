@@ -64,6 +64,6 @@ Use the Jupyter notebook in the `notebook/` folder to seed sample data into Cosm
 
 ## Notes
 
-- The API [api/src/functions/products.js](api/src/functions/products.js) expects Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
+- The API [api/src/functions/shared/context.js](api/src/functions/shared/context.js) expects correct Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
 - The notebook can be used for both initial seeding and further data exploration.
 - For more details, see the documentation in the [notebook/README.md](notebook/README.md).
