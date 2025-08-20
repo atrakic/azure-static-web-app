@@ -4,6 +4,7 @@ all: dev
 
 dev:
 	echo "Starting up, use <Ctrl+C> to quit"
+	pushd api; npm install; popd
 	npm run start
 
 azure-infra:
