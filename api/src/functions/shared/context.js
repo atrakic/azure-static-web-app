@@ -13,8 +13,8 @@ const client = new CosmosClient({
   },
 });
 const container = client
-  .database("cosmosCatalog.cosmicworks")
-  .container("cosmicworks");
+  .database("cosmicworks")
+  .container("products");
 
 async function getItems(context) {
   const { resources: itemArray } = await container.items.readAll().fetchAll();
