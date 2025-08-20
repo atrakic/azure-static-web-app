@@ -12,9 +12,7 @@ const client = new CosmosClient({
     requestTimeout: 10000,
   },
 });
-const container = client
-  .database("cosmicworks")
-  .container("products");
+const container = client.database("cosmicworks").container("products");
 
 async function getItems(context) {
   const { resources: itemArray } = await container.items.readAll().fetchAll();

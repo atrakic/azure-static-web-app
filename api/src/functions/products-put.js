@@ -1,5 +1,5 @@
 const { app } = require("@azure/functions");
-const { container } = require("./shared/context");
+const { container } = require("../shared/context");
 
 app.http("productsPut", {
   methods: ["PUT"],
