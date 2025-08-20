@@ -1,62 +1,143 @@
+@description('The name of the project or application')
+param projectName string = 'mywebapp'
+
+@description('Azure region for all resources')
 param location string = resourceGroup().location
-param staticWebAppName string = 'my-static-web-app'
-param cosmosDbAccountName string = 'my-cosmos-db-account'
 
-resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
-    name: staticWebAppName
-    location: location
+param appNameSuffix string = uniqueString(resourceGroup().id)
+
+@description('CosmosDB account name')
+param cosmosAccountName string = 'cosmos-${projectName}-${appNameSuffix}'
+
+@description('Static Web App name')
+param staticWebAppName string = 'stapp-${projectName}-${appNameSuffix}'
+
+@description('Application Insights name')
+param appInsightsName string = 'insights-${projectName}-${appNameSuffix}'
+
+@description('Name of the workspace where the data will be stored.')
+param workspaceName string = 'myWorkspace-${projectName}-${appNameSuffix}'
+
+@description('CosmosDB database name')
+param cosmosDatabaseName string = 'mainDatabase'
+
+@description('CosmosDB container name')
+param cosmosContainerName string = 'mainContainer'
+
+// Application Insights Resource
+resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
+  name: workspaceName
+  location: location
+  properties: {
     sku: {
-        name: 'Standard'
-        tier: 'Standard'
+      name: 'PerGB2018'
     }
-    properties: {
-        repositoryUrl: ''
-        branch: ''
-        buildProperties: {
-            apiLocation: 'api'
-            appLocation: 'app'
-            outputLocation: 'build'
-        }
-    }
+    retentionInDays: 14
+  }
 }
 
+resource appInsights 'insights/components@2020-02-02' = {
+  name: appInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: workspace.id
+  }
+}
 
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-03-15' = {
-    name: cosmosDbAccountName
-    location: location
-    kind: 'GlobalDocumentDB'
-    properties: {
-        databaseAccountOfferType: 'Standard'
-        locations: [
-            {
-                locationName: location
-                failoverPriority: 0
-                isZoneRedundant: false
-            }
+// CosmosDB Account
+resource cosmosAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
+  name: cosmosAccountName
+  location: location
+  kind: 'GlobalDocumentDB'
+  properties: {
+    databaseAccountOfferType: 'Standard'
+    locations: [
+      {
+        locationName: location
+        failoverPriority: 0
+        isZoneRedundant: false
+      }
+    ]
+    consistencyPolicy: {
+      defaultConsistencyLevel: 'Session'
+    }
+    capabilities: [
+      {
+        name: 'EnableServerless'
+      }
+    ]
+  }
+}
+
+// CosmosDB Database
+resource cosmosDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-04-15' = {
+  parent: cosmosAccount
+  name: cosmosDatabaseName
+  properties: {
+    resource: {
+      id: cosmosDatabaseName
+    }
+  }
+}
+
+// CosmosDB Container
+resource cosmosContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-04-15' = {
+  parent: cosmosDatabase
+  name: cosmosContainerName
+  properties: {
+    resource: {
+      id: cosmosContainerName
+      partitionKey: {
+        paths: [
+          '/id'
         ]
-        consistencyPolicy: {
-            defaultConsistencyLevel: 'Session'
-        }
-        enableFreeTier: true
+        kind: 'Hash'
+      }
     }
+  }
 }
 
+// Static Web App
+resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
+  name: staticWebAppName
+  location: location
+  sku: {
+    name: 'Free'
+    tier: 'Free'
+  }
+  properties: {
+    repositoryUrl: '' // Optional: Add your GitHub/Azure DevOps repo URL
+    branch: ''        // Optional: Specify branch for CI/CD
+    stagingEnvironmentPolicy: 'Enabled'
+    allowConfigFileUpdates: true
+
+    buildProperties: {
+      apiLocation: 'api'
+      appLocation: 'app'
+      outputLocation: 'build'
+    }
+  }
+}
 
 resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
-    name: '${staticWebAppName}/appsettings'
+  name: '${staticWebAppName}/appsettings'
+  properties: {
     properties: {
-        properties: {
-            COSMOS_DB_ENDPOINT: cosmosDbAccount.properties.documentEndpoint
-            COSMOS_DB_ACCOUNT_NAME: cosmosDbAccountName
-            COSMOS_KEY: cosmosDbAccount.listKeys().primaryMasterKey
-        }
+      APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.InstrumentationKey
+      COSMOS_DB_ENDPOINT: cosmosAccount.properties.documentEndpoint
+      COSMOS_KEY: cosmosAccount.listKeys().primaryMasterKey
     }
-    dependsOn: [
-        staticWebApp
-        cosmosDbAccount
-    ]
+  }
+  dependsOn: [
+    staticWebApp
+  ]
 }
 
-output staticWebAppEndpoint string = staticWebApp.properties.defaultHostname
-output COSMOS_DB_ENDPOINT string = cosmosDbAccount.properties.documentEndpoint
-output COSMOS_KEY string = cosmosDbAccount.listKeys().primaryMasterKey
+// Outputs for reference and connection
+output resourceGroupName string = resourceGroup().name
+output cosmosEndpoint string = cosmosAccount.properties.documentEndpoint
+output cosmosKey string = cosmosAccount.listKeys().primaryMasterKey
+output appInsightsInstrumentationKey string = appInsights.properties.InstrumentationKey
+output staticWebAppDefaultHostname string = staticWebApp.properties.defaultHostname
