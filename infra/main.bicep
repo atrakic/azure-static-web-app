@@ -13,7 +13,7 @@ param cosmosAccountName string = 'cosmos-${projectName}-${appNameSuffix}'
 param staticWebAppName string = 'stapp-${projectName}-${appNameSuffix}'
 
 @description('Application Insights name')
-param appInsightsName string = 'insights-${projectName}-${appNameSuffix}'
+param appInsightsName string = 'appinsights-${projectName}-${appNameSuffix}'
 
 @description('Name of the workspace where the data will be stored.')
 param workspaceName string = 'myWorkspace-${projectName}-${appNameSuffix}'
@@ -25,18 +25,12 @@ param cosmosDatabaseName string = 'mainDatabase'
 param cosmosContainerName string = 'mainContainer'
 
 // Application Insights Resource
-resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: workspaceName
   location: location
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-    retentionInDays: 14
-  }
 }
 
-resource appInsights 'insights/components@2020-02-02' = {
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
   location: location
   kind: 'web'
@@ -109,7 +103,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
   }
   properties: {
     repositoryUrl: '' // Optional: Add your GitHub/Azure DevOps repo URL
-    branch: ''        // Optional: Specify branch for CI/CD
+    branch: '' // Optional: Specify branch for CI/CD
     stagingEnvironmentPolicy: 'Enabled'
     allowConfigFileUpdates: true
 
@@ -124,19 +118,20 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
 resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
   name: '${staticWebAppName}/appsettings'
   properties: {
-    properties: {
-      APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.InstrumentationKey
-      COSMOS_DB_ENDPOINT: cosmosAccount.properties.documentEndpoint
-      COSMOS_KEY: cosmosAccount.listKeys().primaryMasterKey
-    }
+    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.InstrumentationKey
+    COSMOS_DB_ENDPOINT: cosmosAccount.properties.documentEndpoint
+    COSMOS_KEY: cosmosAccount.listKeys().primaryMasterKey
   }
   dependsOn: [
     staticWebApp
+    cosmosDatabase
+    appInsights
   ]
 }
 
 // Outputs for reference and connection
 output resourceGroupName string = resourceGroup().name
+output staticWebAppName string = staticWebAppName
 output cosmosEndpoint string = cosmosAccount.properties.documentEndpoint
 output cosmosKey string = cosmosAccount.listKeys().primaryMasterKey
 output appInsightsInstrumentationKey string = appInsights.properties.InstrumentationKey

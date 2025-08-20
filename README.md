@@ -18,7 +18,7 @@ The infrastructure is defined in `infra/main.bicep` and can be deployed using th
 
 ```sh
 cd infra
-make all
+make
 # This will create a resource group, Cosmos DB account, database, container, and a Static Web App.
 ```
 
@@ -29,7 +29,7 @@ make status
 make outputs
 ```
 
-To clean up resources:
+To clean up Azure resources:
 
 ```sh
 make clean
@@ -37,7 +37,8 @@ make clean
 
 ### 2. Deploy the Application
 
-Push your code to the repository connected to Azure Static Web Apps, or use Azure Portal to link your repo and trigger deployment. The Static Web App will be built and deployed automatically.
+1. Add Github secret: `AZURE_STATIC_WEB_APPS_API_TOKEN`
+2. Manually trigger pipeline `Azure Static Web Apps CI/CD` or push some code to the repository connected to Azure Static Web Apps. As last option use Azure Portal to link your repo and trigger deployment. The Static Web App will be built and deployed automatically.
 
 ### 3. Seed the Database (Cosmos DB)
 
@@ -64,6 +65,6 @@ Use the Jupyter notebook in the `notebook/` folder to seed sample data into Cosm
 
 ## Notes
 
-- The API [api/src/functions/shared/context.js](api/src/functions/shared/context.js) expects correct Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
+- The API [api/src/functions/shared/context.js](api/src/functions/shared/context.js) expects Cosmos DB endpoint and credentials to be set in environment variables (see Bicep outputs and Static Web App settings).
 - The notebook can be used for both initial seeding and further data exploration.
 - For more details, see the documentation in the [notebook/README.md](notebook/README.md).
