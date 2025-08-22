@@ -1,3 +1,7 @@
+pw-report/*
+report.json
+test-results/**
+
 bin
 obj
 csx

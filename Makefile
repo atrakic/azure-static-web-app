@@ -4,6 +4,7 @@ all: dev
 
 dev:
 	echo "Starting up, use <Ctrl+C> to quit"
+	npm install
 	swa start
 
 azure-infra:
@@ -32,6 +33,7 @@ test:
 	npm run test --if-present
 
 clean:
+	npm cache clean --force
 	docker stop linux-emulator
 	docker rm -f linux-emulator
 

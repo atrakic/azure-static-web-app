@@ -38,7 +38,7 @@ You can run the notebook in two ways:
 
 ## Integration with Static Web App
 
-- The seeded Cosmos DB data is used by the API in `api/src/functions/products.js`.
+- The seeded Cosmos DB data is used by the API in `src/functions/products.js`.
 - You can use the notebook to validate, update, or explore product data for your app.
 - The infrastructure (Cosmos DB, etc.) should be provisioned before running the notebook (see main project README for deployment steps).
 
