@@ -1,7 +1,3 @@
-test-results/
-pw-report/
-report.json
-
 bin
 obj
 csx

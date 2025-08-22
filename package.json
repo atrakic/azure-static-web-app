@@ -1,15 +1,20 @@
 {
-  "directories": {
-    "test": "tests"
-  },
-  "devDependencies": {
-    "@azure/static-web-apps-cli": "^2.0.6",
-    "@playwright/test": "^1.54.2",
-    "prettier": "^3.6.2"
-  },
+  "name": "azure-static-web-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/functions/*.js",
   "scripts": {
-    "start": "swa start app --api-location api",
+    "start": "swa start ./src/web --api-location api",
     "format": "prettier --no-error-on-unmatched-pattern --write 'api/**/*.js' *.md'' 'docs/**/*.md' 'schema/**/*.json'",
     "test": "playwright test"
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.5.0",
+    "@azure/functions": "^4.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "azure-functions-core-tools": "^4.x",
+    "prettier": "^3.6.2"
   }
 }

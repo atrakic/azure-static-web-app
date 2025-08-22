@@ -2,14 +2,12 @@
   "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
   "configurations": {
     "azure-static-web-app": {
-      "appLocation": "app",
-      "apiLocation": "api",
+      "appLocation": "src/web",
+      "apiLocation": ".",
       "outputLocation": ".",
       "apiLanguage": "node",
-      "apiVersion": "20",
-      "apiBuildCommand": "npm run build --if-present",
-      "appName": "azure-static-web-app",
-      "resourceGroup": "azure-static-web-app-rg"
+      "apiVersion": "16",
+      "apiBuildCommand": "npm run build --if-present"
     }
   }
 }
