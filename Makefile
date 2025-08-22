@@ -1,11 +1,14 @@
 MAKEFLAGS += --silent
 
-all: dev
+all: start
 
-dev:
+start:
 	echo "Starting up, use <Ctrl+C> to quit"
 	npm install
-	npm run start --if-present
+	npm run $@ --if-present
+
+test format:
+	npm run $@ --if-present
 
 azure-infra:
 	read -p "deploying azure infra, press any key to continue " _
@@ -29,12 +32,10 @@ linux-emulator:
     --detach \
     mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
 
-test:
-	npm run test --if-present
 
 clean:
 	npm cache clean --force
 	docker stop linux-emulator
 	docker rm -f linux-emulator
 
-.PHONY: all azure-infra azure-deploy linux-emulator test clean
+.PHONY: all azure-infra azure-deploy linux-emulator test format clean
