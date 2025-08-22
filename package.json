@@ -1,0 +1,26 @@
+{
+  "name": "azure-static-web-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.5.0",
+    "@azure/functions": "^4.0.0"
+  },
+  "scripts": {
+    "start": "swa start ./src/web --api-location api",
+    "format": "prettier --no-error-on-unmatched-pattern --write 'api/**/*.js' *.md'' 'docs/**/*.md' 'schema/**/*.json'",
+    "test": "playwright test"
+  },
+ "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.x",
+    "prettier": "^3.6.2"
+  }
+}

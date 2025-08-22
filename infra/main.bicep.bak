@@ -1,0 +1,133 @@
+@description('Location for the azure resources')
+param location string = resourceGroup().location
+
+@description('Suffix for function app, storage account, and key vault names.')
+param appNameSuffix string = uniqueString(resourceGroup().id)
+
+@description('The name for the static web app name')
+param staticWebAppName string = 'my-static-web-app'
+
+@description('The name for the SQL API container')
+param containerName string
+
+@description('The name for the SQL API database')
+param databaseName string
+
+var cosmosDbAccountName string = 'cosmos-${appNameSuffix}'
+var appInsightsName = 'AppInsights-${appNameSuffix}'
+var workspaceName = 'workspace-${appNameSuffix}'
+var tags = { 'by': appNameSuffix }
+
+resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
+  name: staticWebAppName
+  location: location
+  sku: {
+    name: 'Standard'
+    tier: 'Standard'
+  }
+  properties: {
+    repositoryUrl: ''
+    branch: ''
+    buildProperties: {
+      apiLocation: 'api'
+      appLocation: 'app'
+      outputLocation: 'build'
+    }
+  }
+}
+
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: workspaceName
+  location: location
+}
+
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: appInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+    WorkspaceResourceId: logAnalyticsWorkspace.id
+  }
+}
+
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-03-15' = {
+  name: cosmosDbAccountName
+  location: location
+  kind: 'GlobalDocumentDB'
+  properties: {
+    enableFreeTier: true
+    databaseAccountOfferType: 'Standard'
+    consistencyPolicy: {
+      defaultConsistencyLevel: 'Session'
+    }
+    locations: [
+      {
+        locationName: location
+      }
+    ]
+  }
+}
+
+resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-11-15' = {
+  parent: cosmosDbAccount
+  name: databaseName
+  properties: {
+    resource: {
+      id: databaseName
+    }
+    options: {
+      throughput: 1000
+    }
+  }
+}
+
+resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-11-15' = {
+  parent: database
+  name: containerName
+  properties: {
+    resource: {
+      id: containerName
+      partitionKey: {
+        paths: [
+          '/myPartitionKey'
+        ]
+        kind: 'Hash'
+      }
+      indexingPolicy: {
+        indexingMode: 'consistent'
+        includedPaths: [
+          {
+            path: '/*'
+          }
+        ]
+        excludedPaths: [
+          {
+            path: '/_etag/?'
+          }
+        ]
+      }
+    }
+  }
+}
+
+resource staticWebAppSettings 'Microsoft.Web/staticSites/config@2022-09-01' = {
+  name: '${staticWebAppName}/appsettings'
+  properties: {
+    properties: {
+      COSMOS_DB_ENDPOINT: cosmosDbAccount.properties.documentEndpoint
+      COSMOS_DB_ACCOUNT_NAME: cosmosDbAccountName
+      COSMOS_KEY: cosmosDbAccount.listKeys().primaryMasterKey
+    }
+  }
+  dependsOn: [
+    staticWebApp
+  ]
+}
+
+output resourceGroupName string = resourceGroup().name
+output staticWebAppEndpoint string = staticWebApp.properties.defaultHostname
+output COSMOS_DB_ENDPOINT string = cosmosDbAccount.properties.documentEndpoint
+output COSMOS_KEY string = cosmosDbAccount.listKeys().primaryMasterKey
