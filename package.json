@@ -4,22 +4,16 @@
   "description": "",
   "main": "src/functions/*.js",
   "scripts": {
-    "start": "func start",
-    "test": "echo \"No tests yet...\""
+    "start": "swa start ./src/web --api-location api",
+    "format": "prettier --no-error-on-unmatched-pattern --write 'api/**/*.js' *.md'' 'docs/**/*.md' 'schema/**/*.json'",
+    "test": "playwright test"
   },
   "dependencies": {
     "@azure/cosmos": "^4.5.0",
     "@azure/functions": "^4.0.0"
   },
-  "scripts": {
-    "start": "swa start ./src/web --api-location api",
-    "format": "prettier --no-error-on-unmatched-pattern --write 'api/**/*.js' *.md'' 'docs/**/*.md' 'schema/**/*.json'",
-    "test": "playwright test"
-  },
- "directories": {
-    "test": "tests"
-  },
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "azure-functions-core-tools": "^4.x",
     "prettier": "^3.6.2"
   }
