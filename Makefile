@@ -5,7 +5,7 @@ all: dev
 dev:
 	echo "Starting up, use <Ctrl+C> to quit"
 	npm install
-	swa start
+	npm run start --if-present
 
 azure-infra:
 	read -p "deploying azure infra, press any key to continue " _

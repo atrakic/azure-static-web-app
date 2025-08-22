@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/functions/*.js",
   "scripts": {
-    "start": "swa start ./src/web --api-location api",
+    "start": "swa start",
     "format": "prettier --no-error-on-unmatched-pattern --write 'api/**/*.js' *.md'' 'docs/**/*.md' 'schema/**/*.json'",
     "test": "playwright test"
   },
