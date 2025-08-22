@@ -2,8 +2,39 @@
   "platform": {
     "apiRuntime": "node:20"
   },
+  "trailingSlash": "auto",
+  "routes": [
+    {
+      "route": "/admin/index.html*",
+      "allowedRoles": [
+        "administrator"
+      ]
+    },
+    {
+      "route": "/api/*",
+      "methods": [
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "allowedRoles": [
+        "administrator"
+      ]
+    }
+  ],
+  "mimeTypes": {
+    ".json": "text/json"
+  },
+  "responseOverrides": {
+    "401": {
+      "statusCode": 302,
+      "redirect": "/.auth/login/aad"
+    }
+  },
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["*.{css,scss,js,png,gif,ico,jpg,svg}"]
+    "exclude": [
+      "*.{css,scss,js,png,gif,ico,jpg,svg}"
+    ]
   }
 }
