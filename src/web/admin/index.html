@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Protected Page</title>
+</head>
+<body>
+    <h1>Protected Content</h1>
+    <div id="userInfo"></div>
+    <button id="logoutBtn">Logout</button>
+
+    <script>
+        // Token validation and page load
+        async function validateToken() {
+            const token = localStorage.getItem('jwt_token');
+            
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/protected', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('userInfo').textContent = 
+                        `Welcome, ${userData.email}!`;
+                } else {
+                    // Token invalid, redirect to login
+                    localStorage.removeItem('jwt_token');
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Validation error:', error);
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('jwt_token');
+            window.location.href = '/login.html';
+        });
+
+        // Validate on page load
+        validateToken();
+    </script>
+</body>
+</html>
+
