@@ -2,7 +2,6 @@
 
 [![CI](https://github.com/atrakic/azure-static-web-app/actions/workflows/ci.yml/badge.svg)](https://github.com/atrakic/azure-static-web-app/actions/workflows/ci.yml)
 
-
 This is a demonstration & sample application designed to be a full-stack web app (API + frontend but using no front-end frameworks).  
 It provides persistent web access to a simple product inventory.
 

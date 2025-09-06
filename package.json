@@ -2,10 +2,11 @@
   "name": "azure-static-web-app",
   "version": "1.0.0",
   "description": "",
-  "main": "src/functions/*.js",
+  "main": "src/{index.js,functions/*.js}",
   "scripts": {
     "start": "swa start",
-    "format": "prettier --no-error-on-unmatched-pattern --write 'api/**/*.js' *.md'' 'docs/**/*.md' 'schema/**/*.json'",
+    "format": "prettier --no-error-on-unmatched-pattern --write 'src/**/*.js' *.md'' 'docs/**/*.md'",
+    "dev": "func start",
     "test": "playwright test"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@playwright/test": "^1.55.0",
     "azure-functions-core-tools": "^4.x",
+    "eslint": "^9.35.0",
     "prettier": "^3.6.2"
   }
 }
