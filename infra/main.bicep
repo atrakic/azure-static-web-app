@@ -108,9 +108,9 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-09-01' = {
     allowConfigFileUpdates: true
 
     buildProperties: {
-      apiLocation: 'api'
-      appLocation: 'app'
-      outputLocation: 'build'
+      apiLocation: ''
+      appLocation: 'src/web'
+      outputLocation: ''
     }
   }
 }
