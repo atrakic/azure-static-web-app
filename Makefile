@@ -16,10 +16,6 @@ login build deploy:
 azure-infra:
 	read -p "deploying azure infra, press any key to continue " _
 	make -f ./infra/Makefile
-	#STATIC_WEB_APP_NAME=
-	#APPLICATION_NAME=$$(az staticwebapp show --name $$STATIC_WEB_APP_NAME)
-	#echo $$APPLICATION_NAME
-	# export SWA_CLI_DEPLOYMENT_TOKEN=$$(az staticwebapp secrets list --name $$APPLICATION_NAME --query "properties.apiKey")
 
 # https://learn.microsoft.com/en-us/azure/cosmos-db/emulator
 # https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/217
@@ -29,7 +25,7 @@ linux-emulator:
     --publish 1234:1234 \
     --name linux-emulator \
     --detach \
-    mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+    mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview --protocol https
 	echo "http://localhost:1234/"
 
 clean:
