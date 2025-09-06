@@ -7,13 +7,13 @@ app.http("message", {
     context.log(`Http function processed request for url "${request.url}"`);
     const name = request.query.name || (request.body && request.body.name);
     const currentTime = new Date().toISOString();
-    return {
-      body: JSON.stringify({
+    return { jsonBody:
+      {
         text: `Hello, ${name || "World"}!`,
         status: "healthy",
         time: currentTime,
         env: process.env,
-      }),
+      }
     };
   },
 });
