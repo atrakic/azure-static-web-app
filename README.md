@@ -1,10 +1,12 @@
-# Vanilla JavaScript App
+# azure-static-web-app
 
 [![CI](https://github.com/atrakic/azure-static-web-app/actions/workflows/ci.yml/badge.svg)](https://github.com/atrakic/azure-static-web-app/actions/workflows/ci.yml)
 
-[Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps/overview) allows you to easily build JavaScript apps in minutes. Use this repo with the [quickstart](https://docs.microsoft.com/azure/static-web-apps/getting-started?tabs=vanilla-javascript) to build and customize a new static site.
 
-This repo is used as a starter for a _very basic_ HTML web application using no front-end frameworks.
+This is a demonstration & sample application designed to be a full-stack web app (API + frontend but using no front-end frameworks).  
+It provides persistent web access to a simple product inventory.
+
+It is built on several Azure technologies, including: _Functions, Static Web Apps_ and _CosmosDB_ .
 
 ---
 
