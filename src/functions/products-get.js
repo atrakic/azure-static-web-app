@@ -9,8 +9,8 @@ app.http("productsGet", {
     context.log(`Http function processed request for url "${request.url}"`);
     try {
       const querySpec = {
-        query: "SELECT * FROM products p WHERE p.category = @category",
-        parameters: [{ name: "@category", value: "gear-surf-surfboards" }],
+        query: "SELECT * FROM products p ", // WHERE p.category = @category",
+        //parameters: [{ name: "@category", value: "gear-surf-surfboards" }],
       };
       const { resources: items } = await container.items
         .query(querySpec)

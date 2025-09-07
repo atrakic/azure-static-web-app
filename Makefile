@@ -9,7 +9,7 @@ start:
 	npm install
 	npm run $@ --if-present
 
-test dev bootstrap format:
+test dev format:
 	npm run $@ --if-present
 
 login build deploy:
@@ -28,7 +28,7 @@ emulator:
     --name ${emulator} \
     --detach \
     mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview --protocol https
-	echo "http://localhost:1234/"
+	echo "*DataExplorer:\nhttp://localhost:1234"
 
 clean:
 	npm cache clean --force

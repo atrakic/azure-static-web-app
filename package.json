@@ -6,8 +6,7 @@
   "scripts": {
     "start": "swa start",
     "format": "prettier --no-error-on-unmatched-pattern --write 'src/**/*.js' *.md'' 'docs/**/*.md'",
-    "dev": "func start",
-    "bootstrap": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node app.js",
+    "dev": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node app.js && func start",
     "test": "playwright test"
   },
   "keywords": [

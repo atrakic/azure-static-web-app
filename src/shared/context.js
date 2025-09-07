@@ -1,22 +1,38 @@
-const cosmos = require("@azure/cosmos");
-const endpoint = process.env.COSMOS_DB_ENDPOINT || "https://localhost:8081/";
-const key =
-  process.env.COSMOS_KEY ||
-  "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-const { CosmosClient } = cosmos;
+const config = require("./config");
+const CosmosClient = require("@azure/cosmos").CosmosClient;
 
 const client = new CosmosClient({
-  endpoint,
-  key,
-  connectionPolicy: {
-    requestTimeout: 10000,
-  },
+  endpoint: config.endpoint,
+  key: config.key,
 });
-const container = client.database("cosmicworks").container("products");
+
+const container = client
+  .database(config.databaseId)
+  .container(config.containerId);
+
+async function setup(client, databaseId, containerId) {
+  const { statusCode, database } = await client.databases.createIfNotExists({
+    id: databaseId,
+  });
+  console.log(
+    `Database "${database.id}" checked/created. Status code: ${statusCode}`,
+  );
+
+  const partitionKey = config.partitionKey;
+  const { statusCode: containerStatusCode, container } =
+    await database.containers.createIfNotExists({
+      id: containerId,
+      partitionKey,
+      // partitionKey: { paths: ["/id", "/key2"], kind: "MultiHash" },
+    });
+  console.log(
+    `Container "${container.id}" checked/created. Status code: ${containerStatusCode}`,
+  );
+}
 
 async function getItems(context) {
   const { resources: itemArray } = await container.items.readAll().fetchAll();
   context.log(itemArray);
 }
 
-module.exports = { client, container, getItems };
+module.exports = { client, container, getItems, setup };
