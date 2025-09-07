@@ -16,8 +16,7 @@ app.http("productsGet", {
         .query(querySpec)
         .fetchAll();
       return {
-        body: JSON.stringify(items),
-        headers: { "Content-Type": "application/json" },
+        jsonBody: items,
       };
     } catch (error) {
       context.log("ERROR: Error retrieving items from Cosmos DB:", error);
