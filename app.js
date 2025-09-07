@@ -1,13 +1,14 @@
 const CosmosClient = require("@azure/cosmos").CosmosClient;
+const { randomUUID } = require('crypto');
 const config = require("./src/shared/config");
 const dbContext = require("./src/shared/context");
 
 const newItem = {
-  id: 'aaaaaaaa-0000-1111-2222-bbbbbbbbbbbb',
-  category: 'gear-surf-surfboards',
-  name: 'Sunnox Surfboard',
-  quantity: 81,
-  price: 299.99,
+  id: randomUUID(),
+  category: 'demo',
+  name: (new Date()).getTime().toString(36) + Math.random().toString(36).slice(2),
+  quantity: Math.floor(Math.random() * 100) + 1,
+  price: (Math.random() * (19.99 - 10.05) + 10.5).toFixed(2),
   startTime: new Date(),
   expiryTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), // 1 week from now
   sale: true
@@ -41,7 +42,7 @@ async function main() {
      .fetchAll();
 
     items.forEach(item => {
-      console.log(`${item.id} - ${item.category}`);
+      console.log(`${item.id} - ${item.price}`);
     });
     // </QueryItems>
 
