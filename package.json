@@ -7,16 +7,26 @@
     "start": "swa start",
     "format": "prettier --no-error-on-unmatched-pattern --write 'src/**/*.js' *.md'' 'docs/**/*.md'",
     "dev": "func start",
+    "bootstrap": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 node app.js",
     "test": "playwright test"
   },
+  "keywords": [
+    "cosmosdb",
+    "azure",
+    "nosql",
+    "cloud",
+    "azure"
+  ],
   "dependencies": {
     "@azure/cosmos": "^4.5.0",
     "@azure/functions": "^4.0.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "readline-sync": "^1.4.10"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
     "azure-functions-core-tools": "^4.x",
+    "cross-env": "^10.0.0",
     "eslint": "^9.35.0",
     "prettier": "^3.6.2"
   }
